@@ -1,25 +1,36 @@
-import jwt from 'jsonwebtoken';
+import { verifyToken } from "../utils/token.js";
 
-export const verifyToken = (req, res, next) => {
-    try {
-        // verificar si hay un token en el header de autorización
-        const authHeader = req.headers.authorization;
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            return res.status(401).json({ message: 'No autorizado' });
-        }
-
-        // extraer el token 
-        const token = authHeader.split(' ')[1];
-
-        // verificar el token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-        // guardar la información del usuario en el request
-        req.user = decoded;
-
-        next();
-    } catch (error) {
-        console.error(error);
-        res.status(401).json({ message: 'Token inválido' });
+function isLoggedInSession(req,res,next){
+    const user  = req.session.user;
+    if(!user){
+        return res.redirect("/login?error=You+are+not+logged+in")
     }
-};
+    next();
+}
+function isLoggedInAPI(req,res,next){
+    const authorization  = req.headers.authorization;
+    console.log("authorization",authorization);
+    if(!authorization){
+        res.status(401).json({error:"Kai does not allow you to pass"});
+    }
+    let token = authorization.split(" "); 
+    token = token.pop();
+    const result = verifyToken(token);
+    console.log("token verified",result);
+    if(result){
+        req.user = {
+            user_id: result.user_id,
+            role: result.role
+        }
+        next();
+    }else{
+        res.status(401).json({error:"Kai does not allow you to pass"});
+    }
+}
+
+
+export {
+    isLoggedInSession,
+    isLoggedInAPI,
+    verifyToken
+}

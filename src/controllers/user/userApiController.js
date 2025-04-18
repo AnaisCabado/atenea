@@ -1,60 +1,72 @@
-import jwt from 'jsonwebtoken';
-import userController from './userController.js';
+import userController from "./userController.js";
 
-const userApiController = {
-    // registrar usuario(API)
-    register: async (req, res) => {
-        try {
-            const user = await userController.create(req.body);
-            // excluir password del resultado
-            const { password, ...userWithoutPassword } = user.toJSON();
-            res.status(201).json({ message: 'Error en el servidor' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Error en el servidor' });
-        }
-    },
 
-    // login de usuario (API)
-    login: async (req, res) => {
-        try {
-            const { username, password } = req.body;
-            const user = await userController.verifyCredentials(username, password);
+async function getByID(req, res) {
+  try {
+    const id = req.params.id;
+    const user = await userController.controllerGetByID(id);
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+}
 
-            if (!user) {
-                return res.status(401).json({ message: 'Usuario o contraseña incorrectas' });
-            }
+async function getAll(req, res) {
+  try {
+    const user = await userController.controllerGetAll();
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+}
 
-            // generar token JWT
-            const token = jwt.sign(
-                { id: user.user_id, username: user.username },
-                process.env.JWT_SECRET,
-                { expiresIn: '1h' }
-            );
-
-            // excluir password del resultado
-            const { password: _, ...userWithoutPassword } = user.toJSON();
-
-            res.json({
-                user: userWithoutPassword,
-                token
-            });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Error en el servidor' });
-        }
-    },
-
-    // obtener perfil del usuario (API)
-    profile: async (req, res) => {
-        try {
-            const users = await userController.getAll();
-            res.json(users);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Error en el servidor' });
-        }
+async function create(req, res) {
+  try {
+    const response = await userController.controllerCreate(req.body);
+    
+    res.json(response);
+  } catch (error) {
+    console.error(error);
+    if (error.statusCode) {
+      res.status(error.statusCode).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Server error" });
     }
-};
+  }
+}
 
-export default userApiController;
+async function edit(req, res) {
+  try {
+    const id = req.params.id;
+    const response = await userController.controllerEdit(id, req.body);
+    res.json(response);
+  } catch (error) {
+    console.error(error);
+    if (error.statusCode) {
+      res.status(error.statusCode).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+}
+
+async function remove(req, res) {
+  try {
+    const id = req.params.id;
+    const response = await userController.controllerRemove(id);
+    res.json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+}
+
+export default {
+  getAll,
+  getByID,
+  create,
+  edit,
+  remove,
+};

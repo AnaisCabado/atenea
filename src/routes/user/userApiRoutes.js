@@ -5,11 +5,12 @@ import { verifyToken } from "../../middleware/authApi.js";
 const router = Router();
 
 // rutas publicas
-router.post('/register', userApiController.register);
-router.post('/login', userApiController.login);
+
 
 // rutas protegidas
-router.get('/profile', verifyToken, userApiController.profile);
-// router.get('/users', verifyToken, userApiController.getAll);
+// router.get('/register', userApiController.create);
+// router.get('/login', userApiController.getByID);
+// router.get('/profile', verifyToken, userApiController.getByID);
+router.get('/users', verifyToken, userApiController.getAll);
 
 export default router;

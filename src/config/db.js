@@ -2,15 +2,21 @@ import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 
 dotenv.config();
+const DB_HOST=process.env.DB_HOST;
+const DB_PORT = 3306;/* NO TOCAR KAI */
+const DB_USER = process.env.DB_USER;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_NAME = process.env.DB_NAME;
+const DB_DIALECT = "mysql";
 
-const sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASSWORD,
+const connection = new Sequelize(
+    DB_NAME,
+    DB_USER,
+    DB_PASSWORD,
     {
-        host: process.env.DB_HOST,
-        dialect: process.env.DB_DIALECT,
-        port: process.env.DB_PORT,
+        host: DB_HOST,
+        dialect: DB_DIALECT,
+        port: DB_PORT,
         define: {
             timestamps: false,
             freezeTableName: true
@@ -18,9 +24,15 @@ const sequelize = new Sequelize(
     }
 );
 
-// probar la conexion
-sequelize.authenticate()
-    .then(() => console.log('Conexión a la base de datos establecida'))
-    .catch(err => console.error('Error al conectar a la base de datos:', err));
+async function testConnection() {
+    try {
+        await connection.authenticate();
+        console.log('Connection has been established successfully.');
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+    }
+}
 
-export default sequelize;
+testConnection();
+
+export default connection;
