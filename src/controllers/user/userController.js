@@ -16,22 +16,22 @@ async function controllerCreate(data) {
   return result;
 }
 
-async function controllerEdit(id, data) {
-  const userRole = ["customer", "seller"];
-  if (data.role) {
-    data.role = data.role.toLowerCase();
-    if (!userRole.includes(data.role)) {
-      throw new UserRoleIncorrect();
-    }
-  }
-  const result = await userModel.update(data, {
-    where: {
-      user_id: id,
-    },
-  });
-  const updatedUser = await userModel.findByPk(id);
-  return updatedUser;
-}
+// async function controllerEdit(id, data) {
+//   const userRole = ["customer", "seller"];
+//   if (data.role) {
+//     data.role = data.role.toLowerCase();
+//     if (!userRole.includes(data.role)) {
+//       throw new UserRoleIncorrect();
+//     }
+//   }
+//   const result = await userModel.update(data, {
+//     where: {
+//       user_id: id,
+//     },
+//   });
+//   const updatedUser = await userModel.findByPk(id);
+//   return updatedUser;
+// }
 
 async function controllerRemove(id) {
   const result = await userModel.destroy({
@@ -46,6 +46,6 @@ export default {
   controllerGetByID,
   controllerGetAll,
   controllerCreate,
-  controllerEdit,
+  // controllerEdit,
   controllerRemove,
 };
