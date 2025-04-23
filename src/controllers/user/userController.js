@@ -1,45 +1,51 @@
-import User from '../../models/user.js';
-import bcrypt from 'bcrypt';
+import { UserNameNotProvided, UserRoleIncorrect } from "../../utils/errors.js";
+import userModel from "../../models/userModel.js";
 
-const userController = {
-    // obtener todos los users
-    getAll: async () => {
-        try {
-            const users = await User.findAll({
-                attributes: { exclude: ['password'] } // excluir contraseñas
-            });
-            return users;
-        } catch (error) {
-            console.error(error);
-            throw new Error('Error al obtener usuarios');
-        }
-    },
+async function controllerGetByID(id) {
+  const user = await userModel.findByPk(id);
+  return user;
+}
 
-    // crear nuevo usuario
-    create: async () => {
-        try {
-            const { username, password } = userData;
-            const hash = await bcrypt.hash(password, 10);
-            const user = await User.create({ username, password: hash });
-            return user;
-        } catch (error) {
-            console.error(error);
-            throw new Error('Error al crear usuario');
-        }
-    },
+async function controllerGetAll() {
+  const user = await userModel.findAll();
+  return user;
+}
 
-    // verificar credenciales
-    verifyCredentials: async (username, password) => {
-        try {
-            const user = await User.findOne({ where: { username } });
-            if (!user) return null;
+async function controllerCreate(data) { 
+  const result = await userModel.create(data);
+  return result;
+}
 
-            return user;
-        } catch (error) {
-            console.error(error);
-            throw new Error('Error al verificar credenciales');
-        }
+async function controllerEdit(id, data) {
+  const userRole = ["customer", "seller"];
+  if (data.role) {
+    data.role = data.role.toLowerCase();
+    if (!userRole.includes(data.role)) {
+      throw new UserRoleIncorrect();
     }
-};
+  }
+  const result = await userModel.update(data, {
+    where: {
+      user_id: id,
+    },
+  });
+  const updatedUser = await userModel.findByPk(id);
+  return updatedUser;
+}
 
-export default userController;
+async function controllerRemove(id) {
+  const result = await userModel.destroy({
+    where: {
+      user_id: id,
+    },
+  });
+  return result;
+}
+
+export default {
+  controllerGetByID,
+  controllerGetAll,
+  controllerCreate,
+  controllerEdit,
+  controllerRemove,
+};

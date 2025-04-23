@@ -1,34 +1,28 @@
-import express from 'express';
+import express from "express";
 import dotenv from "dotenv";
+import router from "./routes/router.js";
 import session from "express-session";
-import router from "./routes/index.js";
 
-// cargar variables de entorno
+
 dotenv.config();
-
-// crear servidor Express
-const APP_PORT = process.env.APP_PORT || 3000;
-const SESSION_SECRET = process.env.SESSION_SECRET;
-const app = express();;
-app.use(express.static('public'));
+const APP_PORT = process.env.APP_PORT;
+const SESSION_SECRET = process.env.SESSION_SECRET; 
+const app = express();
+app.use(express.static('public')); // para poder subir archivos publicos (estilos, js de front, etc.)
 app.use(session({
     secret: SESSION_SECRET,
     resave: true,
     saveUninitialized: true
 }))
-// configurar middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-// app.use(express.static('src/public'));
 
-// configurar motor de plantillas
-app.set("view engine", "pug");
-app.set("views", "./src/views");
+app.use(express.json()); // para API (formato json)
+app.use(express.urlencoded({extended:true})); // para Vistas (formato formulario)
 
-// configurar rutas
-app.use("/", router);
+app.set('views', 'src/views');
+app.set('view engine', 'pug');
 
-// iniciar servidor
-app.listen(APP_PORT, () => {
-    console.log(`Servidor escuchando en http://localhost:${APP_PORT}`);
-});
+app.use("/",router);
+
+app.listen(3000,()=>{
+    console.log(`Backend conectado al puerto ${APP_PORT}`);
+})

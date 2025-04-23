@@ -7,7 +7,7 @@ const DB_PORT = 3306;/* NO TOCAR KAI */
 const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 const DB_NAME = process.env.DB_NAME;
-const DB_DIALECT = "mysql";
+const DB_DIALECT = process.env.DB_DIALECT;
 
 const connection = new Sequelize(
     DB_NAME,

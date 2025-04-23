@@ -31,6 +31,5 @@ function isLoggedInAPI(req,res,next){
 
 export {
     isLoggedInSession,
-    isLoggedInAPI,
-    verifyToken
+    isLoggedInAPI
 }
