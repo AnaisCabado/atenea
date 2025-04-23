@@ -33,7 +33,7 @@ async function controllerRemove(id) {
 
 export default {
   controllerGetByID,
-  // controllerGetAll,
+  controllerGetAll,
   controllerCreate,
   controllerRemove,
 };

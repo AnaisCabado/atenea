@@ -8,6 +8,5 @@ const router = Router();
 // rutas protegidas
 router.get('/publications/:id', publicationApiController.getByID);
 router.get('/publications', publicationApiController.getAll);
-// router.get('/publications/date', publicationApiController.getByDate);
 
 export default router;
