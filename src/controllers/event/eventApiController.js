@@ -13,7 +13,6 @@ async function getAll(req, res) {
   async function getByDate(req, res) {
     try {
       const { date } = req.params;
-      console.log(date);
       if (!date) {
         return res.status(400).json({ error: "No hay eventos para esta fecha" });
       }

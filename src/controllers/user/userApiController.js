@@ -1,4 +1,5 @@
 import userController from "./userController.js";
+import { hash } from "../../utils/bcrypt.js";
 
 
 async function getByID(req, res) {
@@ -9,6 +10,22 @@ async function getByID(req, res) {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server error" });
+  }
+}
+
+async function getByUsername(req, res) {
+  try {
+    const { username } = req.params;
+    console.log(username);
+    if (!username) {
+      return res.status(400).json({ error: "Usuario no encontrado" });
+    }
+ 
+    const user = await userController.controllerGetByUsername(username);
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });    
   }
 }
 
@@ -24,6 +41,7 @@ async function getAll(req, res) {
 
 async function create(req, res) {
   try {
+    req.body.password = await hash(req.body.password);
     const response = await userController.controllerCreate(req.body);
     
     res.json(response);
@@ -39,6 +57,8 @@ async function create(req, res) {
 
 async function edit(req, res) {
   try {
+    req.body.password = await hash(req.body.password);
+
     const id = req.params.id;
     const response = await userController.controllerEdit(id, req.body);
     res.json(response);
@@ -66,6 +86,7 @@ async function remove(req, res) {
 export default {
   getAll,
   getByID,
+  getByUsername,
   create,
   edit,
   remove,

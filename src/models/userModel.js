@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/sequelize.js";
+import Publication from "./publicationModel.js";
 
 const User = sequelize.define('user', {
     user_id: {
@@ -30,5 +31,8 @@ const User = sequelize.define('user', {
 }, {
     tableName: 'user'
 });
+
+User.hasMany(Publication, { foreignKey: 'publication_id' });
+Publication.belongsTo(User, { foreignKey: 'user_id' });
 
 export default User;

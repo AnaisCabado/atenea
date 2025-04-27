@@ -1,8 +1,9 @@
 import eventModel from "../../models/eventModel.js";
+import publicationModel from '../../models/publicationModel.js';
 import { Op } from "sequelize";
 
 async function controllerGetAllEvents() {
-    const events = await eventModel.findAll({
+    const events = await publicationModel.findAll({
       where: {
         category: "event"
       },

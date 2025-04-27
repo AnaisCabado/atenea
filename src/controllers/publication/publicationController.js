@@ -1,4 +1,5 @@
 import publicationModel from "../../models/publicationModel.js";
+import User from "../../models/userModel.js";
 
 async function controllerGetByID(id) {
   const publication = await publicationModel.findByPk(id);
@@ -6,20 +7,36 @@ async function controllerGetByID(id) {
 }
 
 async function controllerGetAll() {
-  const publication = await publicationModel.findAll();
-  return publication;
+  const publications = await publicationModel.findAll();
+  return publications;
 }
 
-// async function controllerGetByDate() {
-//   const publication = await publicationModel.findAll({
-//     order: [["created_at", "DESC"]],
-//   });
-//   return publication;
-// }
+async function controllerGetByUser(username) {
+  const publications = await publicationModel.findAll({
+    include: [{
+      model: User,
+      where: { username: username },
+      attributes: []
+    }],
+    order: [["created_at", "DESC"]]
+  });
+  return publications;
+}
 
 async function controllerCreate(data) { 
   const result = await publicationModel.create(data);
   return result;
+}
+
+async function controllerEdit(id, data) {
+  const result = await publicationModel.update(data, {
+    where: {
+      publication_id: id,
+    },
+    order: [["created_at", "DESC"]]
+  });
+  const updatedUser = await publicationModel.findByPk(id);
+  return updatedUser;
 }
 
 async function controllerRemove(id) {
@@ -34,6 +51,8 @@ async function controllerRemove(id) {
 export default {
   controllerGetByID,
   controllerGetAll,
+  controllerGetByUser,
   controllerCreate,
+  controllerEdit,
   controllerRemove,
 };

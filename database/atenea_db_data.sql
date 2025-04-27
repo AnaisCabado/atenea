@@ -1,16 +1,16 @@
 USE atenea_db;
 
 INSERT INTO `user` (first_name, last_name, username, email, password) VALUES
-('Ana', 'Ramírez', 'artsyAna', 'ana.ramirez2@example.com', 'hashedpass1'),
-('Pablo', 'Gómez', 'painterPablo', 'pablo.gomez@example.com', 'hashedpass2'),
-('Juan', 'Morales', 'collabJuan', 'juan.morales@example.com', 'hashedpass3'),
-('Sofía', 'López', 'sketchSofi', 'sofia.lopez@example.com', 'hashedpass4'),
-('Elena', 'Castro', 'expoElena', 'elena.castro@example.com', 'hashedpass5'),
-('Marcos', 'Fernández', 'muralsMark', 'marcos.fernandez@example.com', 'hashedpass6'),
-('Lucía', 'Torres', 'artTeacher', 'lucia.torres@example.com', 'hashedpass7'),
-('José', 'Martínez', 'drawKid', 'jose.martinez@example.com', 'hashedpass8'),
-('Gabriela', 'Ríos', 'galeriaGaby', 'gabriela.rios@example.com', 'hashedpass9'),
-('Miguel', 'Navarro', 'tattooMike', 'miguel.navarro@example.com', 'hashedpass10');
+('Ana', 'Ramírez', 'artsyAna', 'ana.ramirez2@example.com', '$2b$10$3hlItH6DsK5FMGuhhgsGj.IivU6zHhKREr5o3X4V72qnHoq44NLBK'),
+('Pablo', 'Gómez', 'painterPablo', 'pablo.gomez@example.com', '$2b$10$3hlItH6DsK5FMGuhhgsGj.IivU6zHhKREr5o3X4V72qnHoq44NLBK'),
+('Juan', 'Morales', 'collabJuan', 'juan.morales@example.com', '$2b$10$3hlItH6DsK5FMGuhhgsGj.IivU6zHhKREr5o3X4V72qnHoq44NLBK'),
+('Sofía', 'López', 'sketchSofi', 'sofia.lopez@example.com', '$2b$10$3hlItH6DsK5FMGuhhgsGj.IivU6zHhKREr5o3X4V72qnHoq44NLBK'),
+('Elena', 'Castro', 'expoElena', 'elena.castro@example.com', '$2b$10$3hlItH6DsK5FMGuhhgsGj.IivU6zHhKREr5o3X4V72qnHoq44NLBK'),
+('Marcos', 'Fernández', 'muralsMark', 'marcos.fernandez@example.com', '$2b$10$3hlItH6DsK5FMGuhhgsGj.IivU6zHhKREr5o3X4V72qnHoq44NLBK'),
+('Lucía', 'Torres', 'artTeacher', 'lucia.torres@example.com', '$2b$10$3hlItH6DsK5FMGuhhgsGj.IivU6zHhKREr5o3X4V72qnHoq44NLBK'),
+('José', 'Martínez', 'drawKid', 'jose.martinez@example.com', '$2b$10$3hlItH6DsK5FMGuhhgsGj.IivU6zHhKREr5o3X4V72qnHoq44NLBK'),
+('Gabriela', 'Ríos', 'galeriaGaby', 'gabriela.rios@example.com', '$2b$10$3hlItH6DsK5FMGuhhgsGj.IivU6zHhKREr5o3X4V72qnHoq44NLBK'),
+('Miguel', 'Navarro', 'tattooMike', 'miguel.navarro@example.com', '$2b$10$3hlItH6DsK5FMGuhhgsGj.IivU6zHhKREr5o3X4V72qnHoq44NLBK');
 
 
 INSERT INTO `publication` (created_at, title, text, category, user_id) VALUES

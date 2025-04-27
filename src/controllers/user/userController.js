@@ -1,4 +1,5 @@
-import { UserNameNotProvided, UserRoleIncorrect } from "../../utils/errors.js";
+// import { UserNameNotProvided, UserRoleIncorrect } from "../../utils/errors.js";
+import { where } from "sequelize";
 import userModel from "../../models/userModel.js";
 
 async function controllerGetByID(id) {
@@ -11,27 +12,28 @@ async function controllerGetAll() {
   return user;
 }
 
+async function controllerGetByUsername(username) {
+  const user = await userModel.findOne({
+    where: { username: username },
+  });
+  return user;
+}
+
 async function controllerCreate(data) { 
   const result = await userModel.create(data);
   return result;
 }
 
-// async function controllerEdit(id, data) {
-//   const userRole = ["customer", "seller"];
-//   if (data.role) {
-//     data.role = data.role.toLowerCase();
-//     if (!userRole.includes(data.role)) {
-//       throw new UserRoleIncorrect();
-//     }
-//   }
-//   const result = await userModel.update(data, {
-//     where: {
-//       user_id: id,
-//     },
-//   });
-//   const updatedUser = await userModel.findByPk(id);
-//   return updatedUser;
-// }
+async function controllerEdit(id, data) {
+  const result = await userModel.update(data, {
+    where: {
+      user_id: id,
+    },
+    order: [["created_at", "DESC"]]
+  });
+  const updatedUser = await userModel.findByPk(id);
+  return updatedUser;
+}
 
 async function controllerRemove(id) {
   const result = await userModel.destroy({
@@ -44,8 +46,9 @@ async function controllerRemove(id) {
 
 export default {
   controllerGetByID,
+  controllerGetByUsername,
   controllerGetAll,
   controllerCreate,
-  // controllerEdit,
+  controllerEdit,
   controllerRemove,
 };

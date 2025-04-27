@@ -6,7 +6,7 @@ const router = Router();
 // rutas publicas
 
 // rutas protegidas
-router.get('/events', eventApiController.getAll);
-router.get('/events/:date', eventApiController.getByDate);
+router.get('/', eventApiController.getAll);
+router.get('/:date', eventApiController.getByDate);
 
 export default router;
